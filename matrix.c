@@ -7,64 +7,64 @@
 
 #define SCREEN_WIDTH 80
 #define SCREEN_HEIGHT 25
-#define MAX_FALLEN_LETTERS 100
+#define MAX_FALLEN_NUMBERS 100
 
 typedef struct {
     int x;
     int y;
-    char symbol;
+    int number;
     int speed;
-} FallenLetter;
+} FallenNumber;
 
 void clearScreen() {
     printf("\033[H\033[J"); // ANSI escape sequence to clear the screen
 }
 
-void initializeFallenLetters(FallenLetter* fallenLetters) {
+void initializeFallenNumbers(FallenNumber* fallenNumbers) {
     int i;
     srand(time(NULL));
 
-    for (i = 0; i < MAX_FALLEN_LETTERS; i++) {
-        fallenLetters[i].x = rand() % SCREEN_WIDTH;
-        fallenLetters[i].y = -1 * (rand() % SCREEN_HEIGHT);
-        fallenLetters[i].symbol = (char)(rand() % 94 + 33); // ASCII printable characters range
-        fallenLetters[i].speed = rand() % 5 + 1;
+    for (i = 0; i < MAX_FALLEN_NUMBERS; i++) {
+        fallenNumbers[i].x = rand() % SCREEN_WIDTH;
+        fallenNumbers[i].y = -1 * (rand() % SCREEN_HEIGHT);
+        fallenNumbers[i].number = rand() % 10; // Numbers range from 0 to 9
+        fallenNumbers[i].speed = rand() % 5 + 1;
     }
 }
 
-void updateFallenLetters(FallenLetter* fallenLetters) {
+void updateFallenNumbers(FallenNumber* fallenNumbers) {
     int i;
 
-    for (i = 0; i < MAX_FALLEN_LETTERS; i++) {
-        fallenLetters[i].y += fallenLetters[i].speed;
+    for (i = 0; i < MAX_FALLEN_NUMBERS; i++) {
+        fallenNumbers[i].y += fallenNumbers[i].speed;
 
-        if (fallenLetters[i].y >= SCREEN_HEIGHT) {
-            fallenLetters[i].y = -1 * (rand() % SCREEN_HEIGHT);
-            fallenLetters[i].symbol = (char)(rand() % 94 + 33);
-            fallenLetters[i].speed = rand() % 5 + 1;
+        if (fallenNumbers[i].y >= SCREEN_HEIGHT) {
+            fallenNumbers[i].y = -1 * (rand() % SCREEN_HEIGHT);
+            fallenNumbers[i].number = rand() % 10;
+            fallenNumbers[i].speed = rand() % 5 + 1;
         }
     }
 }
 
-void drawFallenLetters(FallenLetter* fallenLetters) {
+void drawFallenNumbers(FallenNumber* fallenNumbers) {
     int i;
 
     clearScreen();
 
-    for (i = 0; i < MAX_FALLEN_LETTERS; i++) {
-        printf("\033[%d;%dH%c", fallenLetters[i].y, fallenLetters[i].x, fallenLetters[i].symbol);
+    for (i = 0; i < MAX_FALLEN_NUMBERS; i++) {
+        printf("\033[%d;%dH%d", fallenNumbers[i].y, fallenNumbers[i].x, fallenNumbers[i].number);
         fflush(stdout);
     }
 }
 
 int main() {
-    FallenLetter fallenLetters[MAX_FALLEN_LETTERS];
+    FallenNumber fallenNumbers[MAX_FALLEN_NUMBERS];
 
-    initializeFallenLetters(fallenLetters);
+    initializeFallenNumbers(fallenNumbers);
 
     while (1) {
-        updateFallenLetters(fallenLetters);
-        drawFallenLetters(fallenLetters);
+        updateFallenNumbers(fallenNumbers);
+        drawFallenNumbers(fallenNumbers);
         usleep(50000); // Pause for 50 milliseconds
     }
 
